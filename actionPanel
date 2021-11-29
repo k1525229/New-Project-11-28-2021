@@ -1,0 +1,41 @@
+import java.awt.*;
+import javax.swing.*;
+public class actionPanel extends JPanel{
+	public JButton move;
+	public JButton shoreUp;
+	public JButton giveCards;
+	public JButton getTreasure;
+	public JButton leaveIsland;
+	public JButton endTurn;
+	public JButton specialAction;
+	public actionPanel() {
+		this.setLayout(new GridLayout(1,7));
+		move = new JButton();
+		move.add(new JLabel("Move"));
+		add(move,0,0);
+		
+		shoreUp = new JButton();
+		shoreUp.add(new JLabel("ShoreUp"));
+		add(shoreUp,0,1);
+		
+		giveCards = new JButton();
+		giveCards.add(new JLabel("Give Cards"));
+		add(giveCards,0,2);
+		
+		getTreasure = new JButton();
+		getTreasure.add(new JLabel("Get Treasure"));
+		add(getTreasure,0,3);
+		
+		leaveIsland = new JButton();
+		leaveIsland.add(new JLabel("Leave Island"));
+		add(leaveIsland,0,4);
+		
+		endTurn = new JButton();
+		endTurn.add(new JLabel("End Turn"));
+		add(endTurn,0,5);
+		
+		specialAction = new JButton();
+		specialAction.add(new JLabel("Use a Special Action Card"));
+		add(specialAction,0,6);
+	}
+}
