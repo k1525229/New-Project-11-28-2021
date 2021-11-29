@@ -1,0 +1,138 @@
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+public class allPlayerPanel extends JPanel implements MouseListener{
+	private ArrayList<playerObject> list;
+	private ArrayList<playerPanel> panels;
+	private playerPanel selected;
+	private boolean giving;
+	private playerPanel current;
+	public allPlayerPanel(ArrayList<playerObject> list) {
+		this.list = list;
+		panels = new ArrayList<playerPanel>();
+		this.setLayout(new GridLayout(2,2));
+		for(int i =0; i < list.size(); i++) {
+			playerObject p = list.get(i);
+			playerPanel panel = new playerPanel(p);
+			// **** This seems weird 
+			panel.addMouseListener(this);
+			
+			panel.setCallBack(this);
+			add(panel);
+			panels.add(panel);
+		}
+		selected = null;
+		giving = false;
+	}
+	public boolean allOnFools() {
+		for(int i = 0; i < list.size(); i++) {
+			if(!(list.get(i).getLocation().equals("Fools' Landing"))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public playerObject turn(int playerNum) {
+		//System.out.println("allPlayers turn ");
+		unHighLight();
+		for(int i = 0; i < list.size(); i++) {
+			if(playerNum == list.get(i).getPlayerNum()) {
+				//System.out.println("in the if statement");
+				playerPanel p = panels.get(i);
+				current = p;
+				highLight(p);
+				return p.player;
+			}
+		}
+		return null;
+	}
+	public void panelAction() {
+		
+	}
+	public playerPanel currentPanel() {
+		return current;
+	}
+	public void highLight(playerPanel p) {
+		//System.out.println("highlights");
+		unHighLight();
+		p.highLight();
+	}
+	
+	public void unHighLight() {
+		for(int i =0; i < list.size(); i++) {
+			panels.get(i).unHighLight();
+		}
+		repaint();
+	}
+	public void giveCardHighlighting(ArrayList<playerObject> p) {
+		for(int i = 0; i < p.size(); i++) {
+			for(int j = 0; j < list.size(); j++) {
+				if(p.get(i).getPlayerNum() == list.get(j).getPlayerNum()) {
+					panels.get(j).highLightGiveCard();
+				}
+			}
+		}
+	}
+	//DO NOT CALL OUTSIDE OF PLAYER PANEL
+	public void givePlayerCard(playerPanel p, treasureCardObject c) {
+		System.out.println("Screeam");
+		if(giving){
+			selected.player.addHand(c);
+			selected = null;
+			giving = false;
+			repaint();
+		} else {
+			
+		}
+	}
+	public boolean getGiving() {
+		return giving;
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		System.out.println("we know mouse is clicked at " + arg0.getSource().toString());
+		for(int i = 0;  i< panels.size();i++) {
+			if(arg0.getSource().toString().equals(panels.get(i).toString())) {
+				System.out.println("We found the panel");
+				selected = panels.get(i);
+				giving = true;
+				if(panels.get(i).canGiveToo()) {
+					System.out.println("it can be given too");
+
+					for(int j = 0; j < panels.size(); j++) {
+						if(panels.get(j).isPlayer) {
+							System.out.println("we be highlighting cards");
+							panels.get(j).highLightCards();
+						}
+					}
+				}
+			}
+		}
+	}
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
