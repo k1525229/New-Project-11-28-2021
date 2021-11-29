@@ -1,0 +1,11 @@
+import java.awt.*;
+import javax.swing.*;
+public class lostPanel extends JPanel{
+	private String reason;
+	public lostPanel(String str) {
+		reason = str;
+	}
+	public void paint(Graphics g) {
+		g.drawString("GAME OVER BECAUSE: " + reason, getWidth()/2, getHeight()/2);
+	}
+}
