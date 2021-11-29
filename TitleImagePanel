@@ -1,0 +1,21 @@
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import java.awt.Graphics;
+
+public class TitleImagePanel extends JPanel {
+	private BufferedImage titleImage; 
+	public TitleImagePanel() {	
+		try {
+			titleImage = ImageIO.read(TitleImagePanel.class.getResource("/extras/TitleImage.jpg"));
+		} catch (IOException e) {
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA");
+		}
+	}
+	public void paint(Graphics g) {
+		g.drawImage(titleImage, 0, 0, this.getWidth(), this.getHeight(), null);
+	}
+}
+
