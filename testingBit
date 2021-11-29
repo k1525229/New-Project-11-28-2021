@@ -1,0 +1,10 @@
+import java.io.IOException;
+
+public class testingBit {
+
+	public static void main(String[] args) throws IOException {
+		ForbiddenIslandFrame f = new ForbiddenIslandFrame("Forbidden Island");
+
+	}
+
+}
