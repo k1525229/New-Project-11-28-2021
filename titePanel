@@ -1,0 +1,106 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+public class titePanel extends JPanel implements ActionListener{
+	private BufferedImage unFlooded;
+	private BufferedImage Flooded;
+	private BufferedImage shown;
+	private TileObject t;
+	private boolean isHighlighted;
+	private boolean isflooded;
+	private ArrayList<playerObject> players;
+	private boolean isWater;
+	
+	public titePanel(TileObject t) {
+		unFlooded = t.getUnFloodedImage();
+		Flooded = t.getFloodedImage();
+		shown = unFlooded;
+		this.t = t;
+		isflooded = false;
+		players = new ArrayList<playerObject>();
+		isHighlighted = false;
+		isWater = false;
+	}
+	public void actionPerformed(ActionEvent e) {
+		System.out.println(this.toString() + " has been selected");
+	}
+	public void paint(Graphics g) {
+		
+		g.drawImage(shown, 0,0,getWidth(), getHeight(),null);
+		String title = t.getName();
+		if(t.getName().equals("water")) {
+			isWater = true;
+		}
+		g.setFont(new Font("Helvetica", Font.BOLD,getHeight()/15));
+		g.drawString(title, 0, getHeight()-getHeight()/20);
+	//	System.out.println(title + ":" + players.toString());
+		for(int i =0; i < players.size(); i++) {
+			playerObject temp = players.get(i);
+			//System.out.println("player " + temp.getPlayerNum() + " is at " +this.toString());
+			g.setColor(temp.getColor());
+			g.fillOval(10 *i, 10 *i, getWidth()/2, getWidth()/2);
+		}
+		if(isHighlighted == true) {
+			g.setColor(Color.yellow);
+			for(int i = 0; i < 10; i++) {
+				g.drawRect(i,i, getWidth()- 10, getHeight()- 10);
+			}
+		}
+	}
+	public void shoreUp() throws IOException{
+		isflooded = false;
+		shown = unFlooded;
+	}
+	public void flood() throws IOException {
+		if(shown.equals(unFlooded)) {
+			shown = Flooded;
+			isflooded = true;
+		} else {
+			t =  new TileObject("water","none","Tile_Flood_Water@2x.png", "Tile_Flood_Water@2x.png");
+			shown = t.getSunkImage();
+			isWater = true;
+			t.setName("water");
+		}
+	}
+	public boolean isFlooded() {
+		return isflooded;
+	}
+	public void addPlayer(playerObject p) {
+		players.add(p);
+		//System.out.println(this.toString() + " " + players.toString());
+		repaint();
+	}
+	public void removePlayer(playerObject p) {
+		//System.out.println(this.toString() + " Removing " + p.toString());
+		players.remove(p);
+		repaint();
+	}
+	public String toString() {
+		return t.getName();
+	}
+	public void highLight() {
+		isHighlighted = true;
+	//	System.out.println("in Highlighting tile method");
+		repaint();
+	}
+	public void unHighLight() {
+		isHighlighted = false;
+		repaint();
+	}
+	public boolean isHighlighted() {
+		return isHighlighted;
+	}
+	public boolean isWater() {
+		return isWater;
+	}
+	public ArrayList<playerObject> getPlayersOnIt(){
+		return players;
+	}
+}
