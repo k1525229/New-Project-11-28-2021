@@ -1,0 +1,31 @@
+
+
+import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JPanel;
+
+public class TitlePanel extends JPanel{
+	public TitleButtonPanel b;
+	public TitlePanel() {
+		this.setLayout(new GridLayout(2, 0));
+		//this.setLayout(new GridBagLayout());
+
+		TitleImagePanel i = new TitleImagePanel();
+	
+		this.add(i,0,0);
+
+		b = new TitleButtonPanel();
+		// Stretch the button panel across the bottom
+	
+		this.add(b,1,0);
+	}
+	public boolean start() {
+		//System.out.println(b.start());
+		int i = 0;   
+		return b.start();
+	}
+	public int getDifficulty() {
+		return b.getDifficulty();
+	}
+}
