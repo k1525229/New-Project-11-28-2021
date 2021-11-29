@@ -1,0 +1,14 @@
+import java.awt.image.*;
+public class treasureCardObject extends cardObject{
+	private boolean isSpecialAction;
+	public treasureCardObject(BufferedImage i, String t) {
+		super(i,t);
+		isSpecialAction = false;
+	}
+	public boolean isSpecialAction() {
+		return isSpecialAction;
+	}
+	public void setSpecialAction(boolean boo) {
+		isSpecialAction = boo;
+	}
+}
