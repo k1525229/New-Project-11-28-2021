@@ -1,0 +1,203 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.swing.*;
+public class boardPanel extends JPanel implements MouseListener{
+	private boardObject board;
+	private JPanel parentPanel;
+	private ArrayList<playerObject> players;
+	public titePanel[][] panels;
+	private String selected;
+	public boardPanel() {}
+	public boardPanel(boardObject board) {
+		this.board = board;
+		panels = new titePanel[6][6];
+		this.setLayout(new GridLayout(6,6));
+		this.setBackground(new Color(102,51,0));
+		TileObject[][] b = board.getBoard();
+		for(int r = 0; r < 6; r++) {
+			for(int c = 0; c < 6; c++) {
+				TileObject t = b[r][c];
+				titePanel panel = new titePanel(t);
+				panel.addMouseListener(this);
+				panels[r][c] =panel;
+				add(panel,r,c);
+			}
+		}
+	}
+	
+	public void setCallback(JPanel parentPanel) {
+		this.parentPanel = parentPanel;
+	}
+	
+	public boardObject getBoardObject() {
+		return board;
+	}
+	public titePanel getTile(int i, int j) {
+		TileObject t = board.getBoard()[i][j];
+		//System.out.println("This is tile name" + t.getName());
+		
+		return panels[i][j];
+	}
+	public void flood(floodCardObject list) throws IOException {
+			String title = list.getTitle();
+			for(int r = 0; r < 6; r++) {
+				for(int c = 0; c < 6; c++) {
+					titePanel t = panels[r][c];
+					if(title.equals(t.toString())) {
+						t.flood();
+						break;
+					}
+				}
+			}
+	}
+	public void highLightMove(String location) {
+		//System.out.println("in board ****");
+		//find the location of the player on the board
+		for(int i =0; i < 6; i++) {
+			for(int j =0; j < 6; j++) {
+				titePanel t = panels[i][j];
+				if(t.toString().equals(location)) {
+					//t.highLight();
+					if(i-1>=0) {
+						titePanel up = panels[i -1][j];
+						if(!up.isWater())
+							up.highLight();
+					}
+					
+					if(i+1 <6) {
+						titePanel down = panels[i+1][j];
+						if(!down.isWater())
+							down.highLight();
+					}
+					
+					if(j -1 >=0) {
+						titePanel left = panels[i][j-1];
+						if(!left.isWater())
+							left.highLight();
+					}
+					
+					if(j + 1 <6) {
+						titePanel right = panels[i][j+1];
+						if(!right.isWater())
+							right.highLight();
+					}
+				}
+			}
+		}
+		repaint();
+	}
+	public void highLightShore(playerObject p) {
+		System.out.println("Called board panel shoreup");
+		String location = p.getLocation();
+		for(int i = 0; i < 6; i++) {
+			for(int j =0; j < 6; j++) {
+				titePanel t = panels[i][j];
+				if(t.toString().equals(location)) {
+					//t.highLight();
+					if(!t.isWater() && t.isFlooded()) {
+						t.highLight();
+					}
+					if(i-1>=0) {
+						titePanel up = panels[i -1][j];
+						if(!up.isWater() && up.isFlooded())
+							up.highLight();
+					}
+					
+					if(i+1 <6) {
+						titePanel down = panels[i+1][j];
+						if(!down.isWater()&& down.isFlooded())
+							down.highLight();
+					}
+					
+					if(j -1 >=0) {
+						titePanel left = panels[i][j-1];
+						if(!left.isWater()&& left.isFlooded())
+							left.highLight();
+					}
+					
+					if(j + 1 <6) {
+						titePanel right = panels[i][j+1];
+						if(!right.isWater()&& right.isFlooded())
+							right.highLight();
+					}
+				}
+			}
+		}
+	}
+	public ArrayList<playerObject> whoWeShareATileWith(playerObject p){
+		//determines who else is on the tile 
+		//args:  Current player
+		//returns: List of who else is on the tile
+		ArrayList<playerObject> returnValues = new ArrayList<playerObject>();
+		
+		//Iterate through all tiles on board until correct tile is located
+		for(int i =0; i < 6; i++) {
+			for(int j = 0; j < 6; j++) {
+				if(p.getLocation().equals(panels[i][j].toString())) {
+					returnValues = panels[i][j].getPlayersOnIt();
+					int index = returnValues.indexOf(p);
+					if(index > -1)
+						returnValues.remove(index);
+					return returnValues;
+				}
+			}
+		}
+		return null;
+	}
+	public void unHighlight() {
+		for(int i =0; i < 6; i++) {
+			for(int j =0; j < 6; j++) {
+				titePanel t = panels[i][j];
+					t.unHighLight();
+			}
+		}
+		//repaint();
+	}
+	public titePanel getTilePanelSelected() {
+		for(int i = 0; i < 6; i++) {
+			for(int j = 0; j < 6; j++) {
+				//System.out.println(i + " " + j);
+				if(panels[i][j].toString().equals(selected)){
+					return panels[i][j];
+				}
+			}
+		}
+		return null;
+	}
+	public String getSelectedTile() {
+		return selected;
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg0){
+		selected = arg0.getSource().toString();
+		System.out.println(selected);
+		//Running callback
+		((MouseListener) parentPanel).mouseClicked(arg0);
+	}
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+}
