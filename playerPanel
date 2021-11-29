@@ -1,0 +1,155 @@
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import javax.swing.*;
+public class playerPanel extends JPanel implements KeyListener{
+	public playerObject player;
+	private Color border;
+	private boolean canGiveToo;
+	private boolean highLightCards;
+	private ArrayList<Integer> cardPlace;
+	public boolean isPlayer;
+	private allPlayerPanel parentPanel;
+	public boolean discardable;
+	public playerPanel(playerObject p){
+		discardable = false;
+		player = p;
+		this.setBackground(Color.WHITE);
+		border =Color.white;
+		canGiveToo = false;
+		cardPlace = new ArrayList<Integer>();
+		highLightCards = false;
+		isPlayer = false;
+		this.addKeyListener(this);
+		this.setFocusable(true);
+	}
+	public void setCallBack(allPlayerPanel parentPanel) {
+		this.parentPanel = parentPanel;
+	}
+	public void paint(Graphics g) {
+		//Clear out the space
+		g.setColor(Color.white);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		// Draw a boarder if needed
+		g.setColor(border);
+		for(int i = 0; i < 10; i++) {
+			g.drawRect(i,i, getWidth()- 10, getHeight()- 10);
+		}
+		
+		// Draw the text
+		Font f = new Font("Calibri", Font.BOLD, getHeight()/30);
+		g.setFont(f);
+		g.setColor(Color.BLACK);
+		g.drawString(player.getName(), 0, getHeight()/20);
+		g.setColor(player.getColor());
+		g.fillOval(getWidth()-getWidth()/10, getHeight()/50, getWidth()/20, getWidth()/20);
+		g.setColor(Color.BLACK);
+		g.drawString("Special Abilities", 0, getHeight() /10);
+		String special = player.getAbility();
+		g.drawString(special, 0, getHeight()/5);
+		g.drawString("Player Number: "+player.getPlayerNum(), 0, getHeight()/4);
+		
+		g.drawString("Treasures Collected : " +player.getTreasure(), 0, getHeight()/3);
+		// Draw the cards in the player hand
+		// Should probably be able to display 6 cards so when hand is full there is room to
+		// pick which one to discard.
+		// **** This should always start with an empty list, but allowing more during development
+		cardPlace = new ArrayList<Integer>();
+		cardPlace.add(0);
+		cardPlace.add((getWidth()/6) );
+		cardPlace.add((getWidth()/6)*2);
+		cardPlace.add((getWidth()/6)*3 );
+		cardPlace.add((getWidth()/6)*4 );
+		cardPlace.add((getWidth()/6)*5 );
+		ArrayList<cardObject> hand = player.getHand();
+		int index = 0;
+		for(int i = 0; i < hand.size(); i++) {
+			BufferedImage im = hand.get(i).getFace();
+			g.drawImage(im,cardPlace.get(i),getHeight()/2,getWidth()/5,getHeight()/5,null);
+
+			// Number the cards if required
+			if(highLightCards) {
+				Font font = new Font("Calibri", Font.BOLD + Font.ITALIC, getHeight()/6);
+				g.setFont(font);
+				g.setColor(Color.RED);
+					g.drawString(index+ "", cardPlace.get(i), getHeight()/2 + getHeight()/8);
+					index++;
+			}
+		}
+	}
+
+	public void highLight() {
+		border = Color.green;
+		isPlayer = true;
+		revalidate();
+		repaint();
+	}
+
+	public void unHighLight() {
+		border = Color.white;
+		canGiveToo = false;
+		isPlayer = false;
+		revalidate();
+		repaint();
+	}
+	public void highLightGiveCard() {
+		border = Color.RED;
+		canGiveToo = true;
+		revalidate();
+		repaint();
+	}
+	public boolean canGiveToo() {
+		return canGiveToo;
+	}
+	public void highLightCards() {
+		highLightCards = true;
+		revalidate();
+		repaint();
+		requestFocus();
+	}
+	public void unHighLightCards() {
+		highLightCards = false;
+		repaint();
+	}
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+//		System.out.println("presssed");
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+//		System.out.println("released");
+		
+	}
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		System.out.println(player.getName() + ": typed: " + arg0.getKeyChar() );
+		char selected = arg0.getKeyChar();
+		int index = selected - '0';
+		if(highLightCards && index < player.getHand().size()) { //only do if give card to another player
+			System.out.println(player.getName() + ": typed: " + arg0.getKeyChar() );
+			treasureCardObject card = (treasureCardObject) player.getHand().get(index);
+			parentPanel.givePlayerCard(this, card);
+			player.getHand().remove(index);
+			highLightCards = false;
+		}
+//		else if(discardable) {
+//			System.out.println("In here");
+//			treasureCardObject card = (treasureCardObject) player.getHand().get(index);
+//			player.getHand().remove(index);
+//			highLightCards = false;
+//			discardable = false;
+//		}
+		repaint();
+		
+	}
+}
