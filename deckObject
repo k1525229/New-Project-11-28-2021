@@ -1,0 +1,65 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+import java.util.Stack;
+
+public class deckObject{
+	private int numCards = 0;
+	private Stack<cardObject> deck = new Stack<>();
+	private Stack<cardObject> discarded = new Stack<>();
+	
+	public deckObject(){
+		
+	}
+	public void addCard(cardObject c) { //adds specified card to the deck stack
+		deck.push(c);
+		numCards++;
+	}
+	public cardObject nextCard() { //pops and returns the first element of deck and pushes it onto the discarded stack
+
+		// ****
+		if (deck.size() <= 0) {
+			// Reached end of deck should refrehsh deck
+			shuffleDiscarded();
+		}
+		// **** shouldn't we be reducing the numCards variable each time we pop() a card?
+		cardObject card = deck.pop();
+		return card;
+	}
+	public void remove(cardObject c) { //removes specified card from deck stack
+		if(deck.contains(c)) {
+			deck.remove(deck.indexOf(c));
+		// **** shouldn't we be reducing the numCards variable each time we remove() a card?
+		}
+	}
+	public void discard(cardObject c) {
+		discarded.add(c);
+	}
+	public void shuffle() { //shuffles the deck stack
+//		Random ran = new Random(12346);
+		Random ran = new Random();
+		Stack<cardObject> temp = new Stack<cardObject>();
+		while(deck.size() > 0) {
+			int index = ran.nextInt(deck.size());
+			temp.add(deck.get(index));
+			deck.remove(index);
+		}
+		deck = temp;
+	}
+	public void shuffleDiscarded() { //shuffles the discarded stack and adds it to the front of the deck
+//		Random ran = new Random(12346);
+		Random ran = new Random();
+		System.out.println("Shuffling discarded");
+		while(discarded.size() > 0) {
+			int index = ran.nextInt(discarded.size());
+			deck.add(0, discarded.get(index));
+			discarded.remove(index);
+		}
+	}
+	public String toString() {
+		return deck.toString() + "\nDiscard: " + discarded.toString();
+	}
+	public int getSize() {
+		return deck.size();
+	}
+}
