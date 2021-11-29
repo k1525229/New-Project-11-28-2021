@@ -1,0 +1,78 @@
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import java.awt.*;
+public class waterMeter extends JPanel
+{
+	private BufferedImage meter;
+	private BufferedImage arrow;
+	private int level;
+	private ArrayList<Integer> levels;
+	private ArrayList<Integer> height;
+	public waterMeter(int difficulty)
+	{
+		this.setBackground(Color.white);
+		level = difficulty - 1;
+		levels = new ArrayList<Integer>();
+		levels.add(2);
+		levels.add(2);
+		levels.add(3);
+		levels.add(3);
+		levels.add(3);
+		levels.add(4);
+		levels.add(4);
+		levels.add(5);
+		levels.add(5);
+		levels.add(10000);
+		
+		height = new ArrayList<Integer>();
+		try
+		{
+//			meter = ImageIO.read(waterMeter.class.getResource("/extras/Niveau.png"));
+			meter = ImageIO.read(waterMeter.class.getResource("/extras/Niveau_square.png"));
+			arrow = ImageIO.read(waterMeter.class.getResource("/extras/stick.png"));
+			
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	public void paint(Graphics g) {
+		g.drawImage(meter, 0, 0, getWidth(), getHeight(),Color.white, null);
+		g.setColor(Color.BLACK);
+		
+		height = new ArrayList<Integer>();
+		height.add((int)(getHeight()-getHeight()/5.8));
+		height.add((int)(getHeight()-(1.5 *getHeight()/5.8)));
+		height.add((int)(getHeight()-(2 *getHeight()/5.8)));
+		height.add((int)(getHeight()-(2.5 *getHeight()/5.8)));
+		height.add((int)(getHeight()-(2.95*getHeight()/5.8)));
+		height.add((int)(getHeight()-(3.46 *getHeight()/5.8)));
+		height.add((int)(getHeight()-(3.93 *getHeight()/5.8)));
+		height.add((int)(getHeight()-(4.4 *getHeight()/5.8)));
+		height.add((int)(getHeight()-(4.8 *getHeight()/5.8)));
+		height.add((int)(getHeight()-(5.3 *getHeight()/5.8)));
+		
+		g.setColor(Color.RED);
+	//	System.out.println("Total height " + getHeight()+"height y" + height.get(level) +" level: " +level);
+		g.fillRect(0, height.get(level), getWidth()/2, getHeight()/50);
+	}
+	public void rise() {
+		level++;
+		repaint();
+	}
+	public boolean hasLost() {
+		if(level >=levels.size()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	public int getLevel() {
+		return level;
+	}
+}
