@@ -1,0 +1,94 @@
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Font;
+
+public class TitleButtonPanel extends JPanel implements ActionListener {
+	private JComboBox<String> diff;
+	private int difficulty;
+	private boolean s; //can start or not
+	public JButton start, info, temp;
+	public TitleButtonPanel() {
+		s = false;
+		difficulty = 1;
+		this.setLayout(new GridLayout(1, 2));
+	
+		String[] difficulty = {"Select Difficulty", "Novice", "[Default] Normal", "Elite", "Legendary"};
+		diff = new JComboBox<String>(difficulty);
+		diff.setBackground(Color.BLACK);
+		diff.setForeground(Color.WHITE);
+		diff.setFont(new Font(Font.SERIF, Font.BOLD, 25));
+
+		
+		start = new JButton("Start Game");
+		start.addActionListener(this);
+		start.setForeground(Color.WHITE);
+		start.setBackground(Color.BLACK);
+		start.setFont(new Font(Font.SERIF, Font.BOLD, 25));
+		
+		info = new JButton("Get Instructions");
+		info.addActionListener(this);
+		info.setBackground(Color.BLACK);
+		info.setForeground(Color.WHITE);
+		info.setFont(new Font(Font.SERIF, Font.BOLD, 25));
+		
+		this.add(start);
+		this.add(diff);
+		this.add(info);
+		this.setVisible(true);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == start) {
+			if (diff.getSelectedIndex() != 0 ) {
+				//This is where you get Difficulty
+				
+				System.out.println("difficulty in titlebutton panel " + difficulty);
+				s = true;
+			}
+			else {
+				System.out.println("Select Difficulty");
+			}
+		}
+		else if(e.getSource() == info) {
+			System.out.println("Do Whatever");
+			try {
+				print();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}	
+	}
+	public void print() throws IOException {
+		File f = new File("readfrom.txt");
+		File o = new File("instruction.txt");
+		try {
+			Scanner input = new Scanner(f);
+			PrintWriter outfile = new PrintWriter(o);
+			while (input.hasNext()) {
+				outfile.println(input.nextLine());
+			}
+			outfile.close();
+		} catch (FileNotFoundException exception) {
+			exception.printStackTrace();
+		}
+	}
+	public boolean start() {
+		return s;
+	}
+	public int getDifficulty() {
+		difficulty = diff.getSelectedIndex();
+		return difficulty;
+	}
+}
