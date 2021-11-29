@@ -1,0 +1,107 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+
+import javax.swing.*;
+import java.util.ArrayList;
+public class gamePanel extends JPanel implements MouseListener{
+	public allPlayerPanel players;
+	public waterMeter waterMeter;
+	public boardPanel board;
+	private playerObject currentPlayer;
+	public String action;
+	public ArrayList<playerObject> allPlayers;
+	private JFrame parentFrame;
+	public gamePanel(allPlayerPanel players, waterMeter w, boardPanel board) {
+		this.setLayout(new GridLayout(1,3));
+		this.players= players;
+		this.waterMeter = w;
+		this.board = board;
+		add(this.board,0,0);
+		add(this.players,0,1);
+		add(this.waterMeter,0,2);
+		this.board.addMouseListener(this);
+	}
+	public void setCallBack(JFrame parentFrame) {
+		this.parentFrame = parentFrame;
+	}
+	public void turn(int i) {
+		currentPlayer = players.turn(i);
+		//System.out.println("inside graphics turn");
+	}
+	public boardPanel getBoard() {
+		return board;
+	}
+	public void setPlayerLocation(ArrayList<playerObject> players) {
+		//System.out.println("in game panel");
+		for(playerObject p : players) {
+			for(int i = 0; i < board.getBoardObject().getBoard().length; i++) {
+				for(int j = 0; j < board.getBoardObject().getBoard().length; j++) {
+					board.getTile(i, j).removePlayer(p);
+					//System.out.println("Cleared Tile"+board.getTile(i, j).toString());
+					if(p.getLocation().equals(board.getTile(i, j).toString())) {
+						//System.out.println("Added player: "+ p.toString() + " to "+ board.getTile(i, j).toString());
+						board.getTile(i, j).addPlayer(p);
+					}
+				}
+			}
+		}
+	}
+	public void highLightMove(playerObject p) {
+		//System.out.println("in highlight move");
+		board.highLightMove(p.getLocation());
+	}
+	public void setAction(String str) {
+		action = str;
+	}
+	public void highLightShore(playerObject p) {
+		board.highLightShore(p);
+	}
+	public void highLightGiveCard(playerObject p) {
+		ArrayList<playerObject> shareAble = board.whoWeShareATileWith(p);
+		players.giveCardHighlighting(shareAble);
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		System.out.println("clicked");
+		System.out.println("in the board");
+		System.out.println("graphics reconigzes " +board.getSelectedTile());
+		if(action.equals("move") && board.getTilePanelSelected().isHighlighted()) {
+			currentPlayer.setLocation(board.getSelectedTile());
+			board.unHighlight();
+			System.out.println("moving player");
+			((ForbiddenIslandFrame)parentFrame).setPlayerLocation();
+		} else if(action.equals("shoreUp") && board.getTilePanelSelected().isHighlighted()) {
+			System.out.println("shoring up");
+			try {
+				board.getTilePanelSelected().shoreUp();
+				board.unHighlight();
+				validate();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+}
