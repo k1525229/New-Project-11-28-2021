@@ -232,6 +232,7 @@ public class ForbiddenIslandFrame extends JFrame implements ActionListener{
 	//	System.out.println(treasureDeck.toString());
 		//System.out.println(floodDeck.toString());
 		//Adds all the cards to player hand
+	//	treasureDeck = new deckObject();
 		ListIterator<playerObject> playerIter = playerObjects.listIterator();
 		while(playerIter.hasNext()) {
 			playerObject p = playerIter.next();
