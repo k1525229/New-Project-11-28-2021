@@ -8,17 +8,24 @@ import javax.swing.JPanel;
 public class TitlePanel extends JPanel{
 	public TitleButtonPanel b;
 	public TitlePanel() {
-		this.setLayout(new GridLayout(2, 0));
-		//this.setLayout(new GridBagLayout());
+//		this.setLayout(new GridLayout(2, 0));
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
 
 		TitleImagePanel i = new TitleImagePanel();
 	
-		this.add(i,0,0);
+		c.fill=1;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx=1;
+		c.weighty=0.9;
+		this.add(i,c);
 
 		b = new TitleButtonPanel();
-		// Stretch the button panel across the bottom
-	
-		this.add(b,1,0);
+
+		c.weighty=0.1;
+		c.gridy = 1;
+		this.add(b,c);
 	}
 	public boolean start() {
 		//System.out.println(b.start());
