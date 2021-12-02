@@ -60,9 +60,10 @@ public class gamePanel extends JPanel implements MouseListener{
 	public void highLightShore(playerObject p) {
 		board.highLightShore(p);
 	}
-	public void highLightGiveCard(playerObject p) {
+	public ArrayList<playerObject> highLightGiveCard(playerObject p) {
 		ArrayList<playerObject> shareAble = board.whoWeShareATileWith(p);
-		players.giveCardHighlighting(shareAble);
+	//	players.giveCardHighlighting(shareAble);
+		return shareAble;
 	}
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
