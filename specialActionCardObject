@@ -23,5 +23,8 @@ public class specialActionCardObject extends treasureCardObject{
 			return false;
 		}
 	}
+	public boolean isSpecial() {
+		return true;
+	}
 	
 }
