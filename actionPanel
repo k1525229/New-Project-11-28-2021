@@ -10,32 +10,32 @@ public class actionPanel extends JPanel{
 	public JButton specialAction;
 	public actionPanel() {
 		this.setLayout(new GridLayout(1,7));
-		move = new JButton();
-		move.add(new JLabel("Move"));
+		move = new JButton("Move");
+		move.setFont(new Font("Arial",Font.PLAIN,30));
 		add(move,0,0);
 		
-		shoreUp = new JButton();
-		shoreUp.add(new JLabel("ShoreUp"));
+		shoreUp = new JButton("ShoreUp");
+		shoreUp.setFont(new Font("Arial",Font.PLAIN,30));
 		add(shoreUp,0,1);
 		
-		giveCards = new JButton();
-		giveCards.add(new JLabel("Give Cards"));
+		giveCards = new JButton("Give Cards");
+		giveCards.setFont(new Font("Arial",Font.PLAIN,30));
 		add(giveCards,0,2);
 		
-		getTreasure = new JButton();
-		getTreasure.add(new JLabel("Get Treasure"));
+		getTreasure = new JButton("Get Treasure");
+		getTreasure.setFont(new Font("Arial",Font.PLAIN,30));
 		add(getTreasure,0,3);
 		
-		leaveIsland = new JButton();
-		leaveIsland.add(new JLabel("Leave Island"));
+		leaveIsland = new JButton("Leave Island");
+		leaveIsland.setFont(new Font("Arial",Font.PLAIN,30));
 		add(leaveIsland,0,4);
 		
-		endTurn = new JButton();
-		endTurn.add(new JLabel("End Turn"));
+		endTurn = new JButton("End Turn");
+		endTurn.setFont(new Font("Arial",Font.PLAIN,30));
 		add(endTurn,0,5);
 		
-		specialAction = new JButton();
-		specialAction.add(new JLabel("Use a Special Action Card"));
+		specialAction = new JButton("Action Card");
+		specialAction.setFont(new Font("Arial",Font.PLAIN,30));
 		add(specialAction,0,6);
 	}
 }
