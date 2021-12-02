@@ -36,6 +36,8 @@ public class ForbiddenIslandFrame extends JFrame implements ActionListener{
 		setSize(WIDTH,HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		makefloodDeck();
+		makeTreasureDeck();
 		title = new TitlePanel();
 		add(title);
 		title.b.start.addActionListener(this);
@@ -47,8 +49,6 @@ public class ForbiddenIslandFrame extends JFrame implements ActionListener{
 		endOffTurnPressed = false;
 		amountOfActions = 0;
 		//make deck god dam it
-		makefloodDeck();
-		makeTreasureDeck();
 		floodDeck.shuffle();
 		treasureDeck.shuffle();
 		currentPlayer = new playerObject();
@@ -451,6 +451,7 @@ public class ForbiddenIslandFrame extends JFrame implements ActionListener{
 		 graphics.highLightMove(currentPlayer);
 		 graphics.setAction("move");	
 		 validate();
+
 		 }
 
 	 public void shoreUp() throws IOException {
@@ -481,22 +482,28 @@ public class ForbiddenIslandFrame extends JFrame implements ActionListener{
 				 );
 		 playerObject selectedPlayer = playerArray[index];
 		ArrayList<cardObject> playerHand = currentPlayer.getHand();
-		cardObject[] hand = new cardObject[playerHand.size()];
-		for(int j = 0; j < hand.length; j++) {
+		cardObject[] hand = new cardObject[playerHand.size() + 1];
+		for(int j = 0; j < hand.length -1; j++) {
 			if(!playerHand.get(j).isSpecial())
-			hand[j] = playerHand.get(j);
+				hand[j + 1] = playerHand.get(j);
 		}
+		hand[0] = new cardObject(null, "Don't Give");
 		int cardIndex = JOptionPane.showOptionDialog(graphics, "Select Treasure card to give", 
 				"Give Card - Step 2", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,hand , hand[0]);
 		cardObject selectedCard = hand[cardIndex];
-		currentPlayer.getHand().remove(selectedCard);
-		selectedPlayer.getHand().add(selectedCard);
+		if(cardIndex == 0) {
+			amountOfActions--;
+		} else {
+			currentPlayer.getHand().remove(selectedCard);
+			selectedPlayer.getHand().add(selectedCard);
+		}
 		 stillTurn();
 		repaint();
 		graphics.validate();
 		// graphics.players.currentPanel().unHighLightCards();
 		 setPlayerLocation();
 		 validate();
+
 	 }
 
 	 public void getTreasure() throws IOException{
@@ -529,6 +536,8 @@ public class ForbiddenIslandFrame extends JFrame implements ActionListener{
 		 }
 		 graphics.setAction("treasure");
 		 validate();
+		 stillTurn();
+
 	 }
 	 public void leaveIsland() {
 		 amountOfActions++;
@@ -549,20 +558,21 @@ public class ForbiddenIslandFrame extends JFrame implements ActionListener{
 		 endOffTurnPressed = true;
 		 stillTurn();
 		 graphics.setAction("end turn");
+		 checkGameState();
 		 validate();
 	 }
 	 public void specialAction() {
-//		 ArrayList<playerPanel> playerPs = graphics.players.listThatHasSpecial();
-//		 playerObject[] players = new playerObject[playerPs.size()];
-//		 int index = JOptionPane.showOptionDialog(graphics, //location
-//				 "Select player to give too", //message
-//				 "Give Card - Step 1", //title of dialog
-//				 JOptionPane.YES_NO_OPTION, //needed
-//				 JOptionPane.QUESTION_MESSAGE, //needed
-//				 null, //needed
-//				 players, //options
-//				 players[0] //default
-//				 );
+		 ArrayList<playerPanel> playerPs = graphics.players.listThatHasSpecial();
+		 playerObject[] players = new playerObject[playerPs.size()];
+		 int index = JOptionPane.showOptionDialog(graphics, //location
+				 "Select player to give too", //message
+				 "Give Card - Step 1", //title of dialog
+				 JOptionPane.YES_NO_OPTION, //needed
+				 JOptionPane.QUESTION_MESSAGE, //needed
+				 null, //needed
+				 players, //options
+				 players[0] //default
+				 );
 	 }
 	 public void endOfTurn() throws IOException {
 		 // Draw cards 
