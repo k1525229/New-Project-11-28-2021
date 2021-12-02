@@ -6,18 +6,50 @@ import java.util.Iterator;
 import java.util.Random;
 public class boardObject {
 	private TileObject[][] boardMatrix;
+	private ArrayList<String> tile_names;
 	private ArrayList<TileObject> tiles;
 	public boardObject() throws IOException {
 		boardMatrix = new TileObject[6][6];
+		tile_names = new ArrayList<String>() {
+			{
+				add("Breakers Bridge");
+				add("Bronze Gate");
+				add("Cave of Embers");
+				add("Cave of Shadows");
+				add("Cliffs of Abandon");
+				add("Copper Gate");
+				add("Coral Palace");
+				add("Crimson Forest");
+				add("Dunes of Deception");
+				add("Fools' Landing");
+				add("Gold Gate");
+				add("Howling Garden");
+				add("Iron Gate");
+				add("Lost Lagoon");
+				add("Misty Marsh");
+				add("Observatory");
+				add("Phantom Rock");
+				add("Silver Gate");
+				add("Temple of the Moon");
+				add("Temple of the Sun");
+				add("Tidal Palace");
+				add("Twilight Hollow");
+				add("Watchtower");
+				add("Whispering Garden");
+			}
+		};
 		tiles = new ArrayList<TileObject>();	
 		/* Making all the tiles*/
-		//tiles.add( new TileObject("Breakers Bridge","none","Breakers Bridge@2x.png", "Breakers Bridge_flood@2x.png"));
-		// This needs to be a resource
-		File f = new File("tileList.txt"); //has the name of each tile
-		Scanner tileTitle = new Scanner(f);
-		while(tileTitle.hasNext()) {
-			String title = tileTitle.nextLine();
-			TileObject t = new TileObject(title, "none", title + "@2x.png", title + "_flood@2x.png");
+//		File f = new File("tileList.txt"); //has the name of each tile
+//		Scanner tileTitle = new Scanner(f);
+
+//		while(tileTitle.hasNext()) {
+//			String title = tileTitle.nextLine();
+//			TileObject t = new TileObject(title, "none", title + "@2x.png", title + "_flood@2x.png");
+//			tiles.add(t);
+//		}
+		for (String tile_name : tile_names) {
+			TileObject t = new TileObject(tile_name, "none", tile_name + "@2x.png", tile_name + "_flood@2x.png");
 			tiles.add(t);
 		}
 		/* w = water
