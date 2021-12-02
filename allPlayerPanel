@@ -95,24 +95,32 @@ public class allPlayerPanel extends JPanel implements MouseListener{
 	}
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		System.out.println("we know mouse is clicked at " + arg0.getSource().toString());
-		for(int i = 0;  i< panels.size();i++) {
-			if(arg0.getSource().toString().equals(panels.get(i).toString())) {
-				System.out.println("We found the panel");
-				selected = panels.get(i);
-				giving = true;
-				if(panels.get(i).canGiveToo()) {
-					System.out.println("it can be given too");
-
-					for(int j = 0; j < panels.size(); j++) {
-						if(panels.get(j).isPlayer) {
-							System.out.println("we be highlighting cards");
-							panels.get(j).highLightCards();
-						}
-					}
-				}
-			}
+//		System.out.println("we know mouse is clicked at " + arg0.getSource().toString());
+//		for(int i = 0;  i< panels.size();i++) {
+//			if(arg0.getSource().toString().equals(panels.get(i).toString())) {
+//				System.out.println("We found the panel");
+//				selected = panels.get(i);
+//				giving = true;
+//				if(panels.get(i).canGiveToo()) {
+//					System.out.println("it can be given too");
+//
+//					for(int j = 0; j < panels.size(); j++) {
+//						if(panels.get(j).isPlayer) {
+//							System.out.println("we be highlighting cards");
+//							panels.get(j).highLightCards();
+//						}
+//					}
+//				}
+//			}
+//		}
+	}
+	public ArrayList<playerPanel> listThatHasSpecial(){
+		ArrayList<playerPanel> possible = new ArrayList<playerPanel>();
+		for(int i = 0; i < list.size(); i++) {
+			if(panels.get(i).containsSpecial())
+				possible.add(panels.get(i));
 		}
+		return possible;
 	}
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
