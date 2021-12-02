@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.*;
-public class playerPanel extends JPanel implements KeyListener{
+public class playerPanel extends JPanel {
 	public playerObject player;
 	private Color border;
 	private boolean canGiveToo;
@@ -25,8 +25,16 @@ public class playerPanel extends JPanel implements KeyListener{
 		cardPlace = new ArrayList<Integer>();
 		highLightCards = false;
 		isPlayer = false;
-		this.addKeyListener(this);
 		this.setFocusable(true);
+	}
+	public boolean containsSpecial() {
+		boolean special = false;
+		for(int i = 0; i < player.getHand().size(); i++) {
+			if(player.getHand().get(i).isSpecial()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	public void setCallBack(allPlayerPanel parentPanel) {
 		this.parentPanel = parentPanel;
@@ -117,39 +125,5 @@ public class playerPanel extends JPanel implements KeyListener{
 		highLightCards = false;
 		repaint();
 	}
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-//		System.out.println("presssed");
-		
-	}
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-//		System.out.println("released");
-		
-	}
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		System.out.println(player.getName() + ": typed: " + arg0.getKeyChar() );
-		char selected = arg0.getKeyChar();
-		int index = selected - '0';
-		if(highLightCards && index < player.getHand().size()) { //only do if give card to another player
-			System.out.println(player.getName() + ": typed: " + arg0.getKeyChar() );
-			treasureCardObject card = (treasureCardObject) player.getHand().get(index);
-			parentPanel.givePlayerCard(this, card);
-			player.getHand().remove(index);
-			highLightCards = false;
-		}
-//		else if(discardable) {
-//			System.out.println("In here");
-//			treasureCardObject card = (treasureCardObject) player.getHand().get(index);
-//			player.getHand().remove(index);
-//			highLightCards = false;
-//			discardable = false;
-//		}
-		repaint();
-		
-	}
+
 }
