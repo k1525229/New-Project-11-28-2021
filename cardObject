@@ -22,4 +22,7 @@ public class cardObject {
 	public boolean isSpecial() {
 		return false;
 	}
+	public boolean isHeli() {
+		return title.equals("Helicopter");
+	}
 }
