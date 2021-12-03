@@ -1,38 +1,21 @@
 
-
-import java.awt.GridLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import java.awt.Graphics;
 
-public class TitlePanel extends JPanel{
-	public TitleButtonPanel b;
-	public TitlePanel() {
-//		this.setLayout(new GridLayout(2, 0));
-		this.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-
-		TitleImagePanel i = new TitleImagePanel();
-	
-		c.fill=1;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx=1;
-		c.weighty=0.9;
-		this.add(i,c);
-
-		b = new TitleButtonPanel();
-
-		c.weighty=0.1;
-		c.gridy = 1;
-		this.add(b,c);
+public class TitleImagePanel extends JPanel {
+	private BufferedImage titleImage; 
+	public TitleImagePanel() {	
+		try {
+			titleImage = ImageIO.read(TitleImagePanel.class.getResource("/extras/TitleImage.jpg"));
+		} catch (IOException e) {
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA");
+		}
 	}
-	public boolean start() {
-		//System.out.println(b.start());
-		int i = 0;   
-		return b.start();
-	}
-	public int getDifficulty() {
-		return b.getDifficulty();
+	public void paint(Graphics g) {
+		g.drawImage(titleImage, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 }
+
