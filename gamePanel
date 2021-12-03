@@ -54,8 +54,14 @@ public class gamePanel extends JPanel implements MouseListener{
 		//System.out.println("in highlight move");
 		board.highLightMove(p.getLocation());
 	}
+	public void highlightSpecialMove() {
+		board.highlightSpecialMove();
+	}
 	public void setAction(String str) {
 		action = str;
+	}
+	public void highlightSpecialShore() {
+		board.highlightSpecialShore();
 	}
 	public void highLightShore(playerObject p) {
 		board.highLightShore(p);
@@ -86,6 +92,23 @@ public class gamePanel extends JPanel implements MouseListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if(action.equals("specialMove") && board.getTilePanelSelected().isHighlighted()) {
+			playerObject selectedPlayer = ((ForbiddenIslandFrame) parentFrame).specialActionUser.player;
+			selectedPlayer.setLocation(board.getSelectedTile());
+			System.out.println(board.getTilePanelSelected().toString() + " " + selectedPlayer.getLocation());
+			((ForbiddenIslandFrame)parentFrame).setPlayerLocation();
+			board.unHighlight();
+			validate();
+		} else if(action.equals("specialShore") && board.getTilePanelSelected().isHighlighted()) {
+			try {
+				board.getTilePanelSelected().shoreUp();
+				board.unHighlight();
+				validate();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			board.unHighlight();
 		}
 		
 	}
