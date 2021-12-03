@@ -58,17 +58,22 @@ public class waterMeter extends JPanel
 		
 		g.setColor(Color.RED);
 	//	System.out.println("Total height " + getHeight()+"height y" + height.get(level) +" level: " +level);
-		g.fillRect(0, height.get(level), getWidth()/2, getHeight()/50);
+		if(!hasLost()) {
+			g.fillRect(0, height.get(level), getWidth()/2, getHeight()/50);
+		}
 	}
 	public void rise() {
 		level++;
 		repaint();
 	}
 	public boolean hasLost() {
+		System.out.print("level is at " + level);
 		if(level >=levels.size()) {
+			System.out.println("true");
 			return true;
 		}
 		else {
+			System.out.println("false");
 			return false;
 		}
 	}
