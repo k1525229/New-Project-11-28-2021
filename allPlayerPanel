@@ -37,6 +37,17 @@ public class allPlayerPanel extends JPanel implements MouseListener{
 		}
 		return true;
 	}
+	public boolean atLeast1Heli() {
+		for(int i = 0; i < list.size(); i++) {
+			playerObject temp = list.get(i);
+			for(int j = 0; j < temp.getHand().size(); j++) {
+				if(temp.getHand().get(j).isHeli()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	public playerObject turn(int playerNum) {
 		//System.out.println("allPlayers turn ");
 		unHighLight();
