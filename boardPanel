@@ -92,6 +92,26 @@ public class boardPanel extends JPanel implements MouseListener{
 		}
 		repaint();
 	}
+	public void highlightSpecialMove() {
+		for(int i = 0; i < 6; i++) {
+			for(int j =0; j < 6; j++) {
+				titePanel t = panels[i][j];
+				if(!t.isWater()) {
+					t.highLight();
+				}
+			}
+		}
+	}
+	public void highlightSpecialShore() {
+		for(int i = 0; i < 6; i++) {
+			for(int j = 0; j < 6; j++) {
+				titePanel t = panels[i][j];
+				if(t.isFlooded()) {
+					t.highLight();
+				}
+			}
+		}
+	}
 	public void highLightShore(playerObject p) {
 		System.out.println("Called board panel shoreup");
 		String location = p.getLocation();
